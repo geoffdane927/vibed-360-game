@@ -1,0 +1,10 @@
+# Local CMake/game builds
+/build-game/
+/build/
+/cmake-build-*/
+
+# Local logs and temporary outputs
+*.log
+*.tmp
+
+# Toolchain output is kept under $HOME, not committed here.
