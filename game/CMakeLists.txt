@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.25)
+project(vibed360 C)
+add_executable(vibed360 main.c)
+set_target_properties(vibed360 PROPERTIES C_STANDARD 17 C_EXTENSIONS ON)
+target_compile_options(vibed360 PRIVATE -Wall -Wextra -Werror)
+xsdk_add_xex(vibed360 TITLE_ID 0x56423630 NAME "Vibed 360")
