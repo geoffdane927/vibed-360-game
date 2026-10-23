@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SDK_DIR="$HOME/xsdk"
 PREFIX="$HOME/xsdk-gcc"
 WORK="$HOME/xsdk-gcc-work"
@@ -44,10 +45,17 @@ cd "$SDK_DIR"
 make -j"$(nproc)" TOOLCHAIN="$PREFIX/bin/powerpc-xsdk-elf-"
 make samples TOOLCHAIN="$PREFIX/bin/powerpc-xsdk-elf-"
 
+# Configure the game's separate CMake project against the built SDK.
+cmake -S "$REPO_DIR/game" -B "$REPO_DIR/build-game" -G Ninja \
+  -DCMAKE_TOOLCHAIN_FILE="$SDK_DIR/cmake/xsdk.cmake" \
+  -DXSDK_TOOLCHAIN="$PREFIX"
+cmake --build "$REPO_DIR/build-game"
+
 echo
 echo "Build commands completed."
 echo "Compiler: $PREFIX/bin/powerpc-xsdk-elf-gcc"
 echo "SDK library: $SDK_DIR/build/libxsdk.a"
 echo "SDK test: $SDK_DIR/build/xsdk_test.xex"
 echo "Sample XEX files: $SDK_DIR/build/samples/"
+echo "Game XEX: $REPO_DIR/build-game/vibed360.xex"
 echo "These outputs have not been tested on your Xbox 360 by this script."
